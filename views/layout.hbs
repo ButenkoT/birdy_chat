@@ -5,19 +5,23 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <header>Socket.IO chat</header>
+    <header>Birdy chat</header>
     {{{body}}}
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-      var socket = io();
+      var serverSocket = io();
+
       $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
+        serverSocket.emit('chat message from client', $('#m').val());
         $('#m').val('');
         return false;
       });
-      socket.on('chat message', function(msg){
+      serverSocket.on('user welcome', function(welcomeMessage){
+        $('#messages').append($('<li>').text(welcomeMessage));
+      });
+      serverSocket.on('chat message from server', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
     </script>

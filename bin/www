@@ -24,13 +24,14 @@ var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
   console.log('a user connected');
+  io.emit('user welcome', 'Welcome to the birdy chat');
+
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
-  socket.on('chat message', function (msg) {
-    //console.log('message: ' + msg);
-    //sending message to all users, to narrow do broadcast on socket
-    io.emit('chat message', msg);
+
+  socket.on('chat message from client', function (msg) {
+    io.emit('chat message from server', msg);
   });
 });
 
