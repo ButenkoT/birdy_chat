@@ -22,16 +22,36 @@ app.set('port', port);
 var server = http.createServer(app);
 var io = require('socket.io')(server);
 
-io.on('connection', function (socket) {
-  console.log('a user connected');
-  io.emit('user welcome', 'Welcome to the birdy chat');
+var usernames = {};
 
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
+io.on('connection', function (socket) {
+  //io.emit('user welcome', 'Welcome to the birdy chat');
+
+  socket.on('adduser', function(username){
+    // we store the username in the socket session for this client
+    socket.username = username;
+    // add the client's username to the global list
+    usernames[username] = username;
+    // echo to client they've connected
+    socket.emit('updatechat', 'SERVER', 'you have connected');
+    // echo globally (all clients) that a person has connected
+    socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
+    // update the list of users in chat, client-side
+    io.sockets.emit('updateusers', usernames);
   });
 
-  socket.on('chat message from client', function (msg) {
-    io.emit('chat message from server', msg);
+  socket.on('disconnect', function () {
+    // remove the username from global usernames list
+    delete usernames[socket.username];
+    // update list of users in chat, client-side
+    io.sockets.emit('updateusers', usernames);
+    // echo globally that this client has left
+    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+  });
+
+  socket.on('sendchat', function (msg) {
+    // we tell the client to execute 'updatechat' with 2 parameters
+    io.emit('updatechat', socket.username, msg);
   });
 });
 

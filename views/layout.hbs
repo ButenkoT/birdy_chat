@@ -14,16 +14,25 @@
       var serverSocket = io();
 
       $('form').submit(function(){
-        serverSocket.emit('chat message from client', $('#m').val());
+        serverSocket.emit('sendchat', $('#m').val());
         $('#m').val('');
         return false;
       });
-      serverSocket.on('user welcome', function(welcomeMessage){
-        $('#messages').append($('<li>').text(welcomeMessage));
+
+      serverSocket.on('connect', function(){
+        serverSocket.emit('adduser', prompt("What's your name?"));
       });
-      serverSocket.on('chat message from server', function(msg){
-        $('#messages').append($('<li>').text(msg));
+      serverSocket.on('updatechat', function(username, msg){
+        $('#messages').append('<li><b>' + username + ':</b>' + msg + '</li>');
       });
+
+      serverSocket.on('updateusers', function(msg){
+        $('#users').empty;
+        $.each(msg, function(key, value){
+          $('#users').append('<p>' + key + '</p>');
+        });
+      });
+
     </script>
   </body>
 </html>
