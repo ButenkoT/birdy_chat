@@ -6,6 +6,41 @@
 
 body {
     font: 13px Helvetica, Arial;
+    background-color: #E8EDD9;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.welcome-page{
+    width: 100%;
+    height: 700px;
+    background-repeat: no-repeat;
+    background-image: url("../images/totoro.jpg");
+    background-size: 100%;
+}
+
+.welcome-container{
+    position: absolute;
+    right: 15%;
+    top: 12%;
+}
+
+.welcome-container h1{
+    margin-bottom: 10%;
+}
+
+.buttons-choice{
+    text-align: center;
+}
+
+.buttons-choice button{
+    margin-right: 15px;
+    height: 30px;
+    width: 90px;
+    background-color: #D39C7F;
 }
 
 form {
@@ -25,7 +60,7 @@ form input {
 
 form button {
     width: 9%;
-    background: rgb(130, 224, 255);
+    background: #A6B387;
     border: none;
     padding: 10px;
 }

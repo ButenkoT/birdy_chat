@@ -5,7 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <header>Birdy chat</header>
+
     {{{body}}}
 
     <script src="/socket.io/socket.io.js"></script>
@@ -22,12 +22,13 @@
       serverSocket.on('connect', function(){
         serverSocket.emit('adduser', prompt("What's your name?"));
       });
+
       serverSocket.on('updatechat', function(username, msg){
         $('#messages').append('<li><b>' + username + ':</b>' + msg + '</li>');
       });
 
       serverSocket.on('updateusers', function(msg){
-        $('#users').empty;
+        $('#users').empty();
         $.each(msg, function(key, value){
           $('#users').append('<p>' + key + '</p>');
         });

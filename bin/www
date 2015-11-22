@@ -25,27 +25,25 @@ var io = require('socket.io')(server);
 var usernames = {};
 
 io.on('connection', function (socket) {
-  //io.emit('user welcome', 'Welcome to the birdy chat');
 
   socket.on('adduser', function(username){
     // we store the username in the socket session for this client
     socket.username = username;
     // add the client's username to the global list
     usernames[username] = username;
-    // echo to client they've connected
+    // echo user
     socket.emit('updatechat', 'SERVER', 'you have connected');
-    // echo globally (all clients) that a person has connected
+    // echo globally
     socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
     // update the list of users in chat, client-side
     io.sockets.emit('updateusers', usernames);
   });
 
   socket.on('disconnect', function () {
-    // remove the username from global usernames list
     delete usernames[socket.username];
-    // update list of users in chat, client-side
+
     io.sockets.emit('updateusers', usernames);
-    // echo globally that this client has left
+
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
 
