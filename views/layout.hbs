@@ -24,7 +24,7 @@
       });
 
       serverSocket.on('updatechat', function(username, msg){
-        $('#messages').append('<li><b>' + username + ':</b>' + msg + '</li>');
+        $('#messages').append('<li> ' + (new Date).toLocaleTimeString("en-GB") + '<b> ' + username + ':</b> ' + msg + '</li>');
       });
 
       serverSocket.on('updateusers', function(msg){
