@@ -10,30 +10,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-      var serverSocket = io();
+    <script src="/javascripts/main.js"></script>
 
-      $('form').submit(function(){
-        serverSocket.emit('sendchat', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-
-      serverSocket.on('connect', function(){
-        serverSocket.emit('adduser', prompt("What's your name?"));
-      });
-
-      serverSocket.on('updatechat', function(username, msg){
-        $('#messages').append('<li> ' + (new Date).toLocaleTimeString("en-GB") + '<b> ' + username + ':</b> ' + msg + '</li>');
-      });
-
-      serverSocket.on('updateusers', function(msg){
-        $('#users').empty();
-        $.each(msg, function(key, value){
-          $('#users').append('<p>' + key + '</p>');
-        });
-      });
-
-    </script>
   </body>
 </html>
