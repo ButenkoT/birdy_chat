@@ -20,6 +20,11 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+server.listen(port, function() {
+  console.log('Express server listening on port ' + port);
+});
+
 var io = require('socket.io')(server);
 
 var usernames = {};
@@ -51,10 +56,6 @@ io.on('connection', function (socket) {
     // we tell the client to execute 'updatechat' with 2 parameters
     io.emit('updatechat', socket.username, msg);
   });
-});
-
-server.listen(port, function() {
-  console.log('Express server listening on port ' + port);
 });
 
 
